@@ -175,6 +175,7 @@ def massa_poisson(k, lam):
 # -----------------------------------------------------------------------------
 # TODO 1 — MEDIANA
 # -----------------------------------------------------------------------------
+
 def mediana(dados):
     """Mediana: o valor do meio da lista ORDENADA.
 
@@ -186,23 +187,29 @@ def mediana(dados):
                mediana([4, 1, 3, 2]) -> 2.5
     """
     # PASSO 1: se len(dados) == 0, levante ValueError("mediana de sequência vazia é indefinida")
+    if len(dados) == 0:
+        raise ValueError("mediana de sequência vazia é indefinida")
 
     # PASSO 2: crie uma lista ordenada:  ordenados = sorted(dados)
+    ordenados = sorted(dados)
 
     # PASSO 3: guarde o tamanho:  n = len(ordenados)
+    n = len(ordenados)
 
     # PASSO 4: descubra o índice do meio:  meio = n // 2   (divisão inteira)
+    meio = n // 2
 
     # PASSO 5: se n for ímpar (n % 2 == 1), devolva ordenados[meio]
+    if n % 2 == 1:
+        return ordenados[meio]
 
     # PASSO 6: se n for par, devolva (ordenados[meio - 1] + ordenados[meio]) / 2
-
-    raise NotImplementedError("TODO 1: implemente mediana() em minhastats.py")
-
+    return (ordenados[meio - 1] + ordenados[meio]) / 2
 
 # -----------------------------------------------------------------------------
 # TODO 2 — MODA
 # -----------------------------------------------------------------------------
+
 def moda(dados):
     """Moda: o(s) valor(es) que mais se repete(m). Devolve SEMPRE uma LISTA,
     porque pode haver empate (várias modas).
@@ -211,65 +218,78 @@ def moda(dados):
                moda([1, 2, 2, 3, 3]) -> [2, 3]
     """
     # PASSO 1: se len(dados) == 0, levante ValueError("moda de sequência vazia é indefinida")
+    if len(dados) == 0:
+        raise ValueError("moda de sequência vazia é indefinida")
 
     # PASSO 2: conte as frequências usando a função pronta:
     #          contagens = contar_frequencias(dados)
+    contagens = contar_frequencias(dados)
 
     # PASSO 3: descubra a maior contagem:  maior = max(contagens.values())
+    maior = max(contagens.values())
 
     # PASSO 4: monte a lista dos valores cuja contagem é igual à maior:
     #          modas = [valor for valor, cont in contagens.items() if cont == maior]
+    modas = [valor for valor, cont in contagens.items() if cont == maior]
 
     # PASSO 5: devolva a lista (pode ordenar com sorted(modas) se os valores forem números)
-
-    raise NotImplementedError("TODO 2: implemente moda() em minhastats.py")
-
+    return sorted(modas)
 
 # -----------------------------------------------------------------------------
 # TODO 3 — AMPLITUDE
 # -----------------------------------------------------------------------------
+
 def amplitude(dados):
     """Amplitude = máximo − mínimo.
 
     Armadilha do guia: "trivial — mas teste com n = 1" (a resposta deve ser 0).
     """
     # PASSO 1: se len(dados) == 0, levante ValueError("amplitude de sequência vazia é indefinida")
+    if len(dados) == 0:
+        raise ValueError("amplitude de sequência vazia é indefinida")
 
     # PASSO 2: devolva max(dados) - min(dados)
-
-    raise NotImplementedError("TODO 3: implemente amplitude() em minhastats.py")
+    return max(dados) - min(dados)
 
 
 # -----------------------------------------------------------------------------
 # TODO 4 — PERCENTIL
 # -----------------------------------------------------------------------------
+
 def percentil(dados, p):
     """Percentil p (de 0 a 100) com interpolação linear — a MESMA convenção do
     np.percentile, para o teste bater.
 
     Regra do guia: posição = p·(n−1)/100 no vetor ordenado; se a posição for
     fracionária (ex.: 3.25), interpole entre os vizinhos (índices 3 e 4).
-
-    Exemplo:  percentil([10, 20, 30, 40], 50) -> 25.0
-              (posição = 50·3/100 = 1.5 -> entre 20 e 30 -> 25)
     """
     # PASSO 1: se len(dados) == 0, levante ValueError("percentil de sequência vazia é indefinido")
+    if len(dados) == 0:
+        raise ValueError("percentil de sequência vazia é indefinido")
 
     # PASSO 2: se p < 0 ou p > 100, levante ValueError("p deve estar entre 0 e 100")
+    if p < 0 or p > 100:
+        raise ValueError("p deve estar entre 0 e 100")
 
     # PASSO 3: ordenados = sorted(dados)   e   n = len(ordenados)
+    ordenados = sorted(dados)
+    n = len(ordenados)
 
     # PASSO 4: posicao = p * (n - 1) / 100
+    posicao = p * (n - 1) / 100
 
     # PASSO 5: parte inteira da posição:   baixo = int(posicao)
+    baixo = int(posicao)
 
     # PASSO 6: o vizinho de cima, sem estourar a lista:   alto = min(baixo + 1, n - 1)
+    alto = min(baixo + 1, n - 1)
 
     # PASSO 7: a parte fracionária:   fracao = posicao - baixo
+    fracao = posicao - baixo
 
     # PASSO 8: devolva ordenados[baixo] + fracao * (ordenados[alto] - ordenados[baixo])
+    return ordenados[baixo] + fracao * (ordenados[alto] - ordenados[baixo])
 
-    raise NotImplementedError("TODO 4: implemente percentil() em minhastats.py")
 
 
 # -----------------------------------------------------------------------------
