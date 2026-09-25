@@ -296,16 +296,23 @@ def percentil(dados, p):
 # TODO 5 — QUARTIS  (reutiliza o percentil — LEGO!)
 # -----------------------------------------------------------------------------
 def quartis(dados):
-    """Devolve a tupla (Q1, Q2, Q3) = percentis 25, 50 e 75.
+    """Devolve a tupla (Q1, Q2, Q3) contendo o primeiro, segundo e terceiro quartis.
 
-    Exemplo:  quartis([1, 2, 3, 4, 5]) -> (2.0, 3.0, 4.0)
+    Dica de ouro: os quartis são simplesmente os percentis 25, 50 e 75.
+    Reutilize a sua função percentil(dados, p) que já está pronta e testada!
     """
-    # PASSO 1: q1 = percentil(dados, 25)
-    # PASSO 2: q2 = percentil(dados, 50)
-    # PASSO 3: q3 = percentil(dados, 75)
-    # PASSO 4: devolva (q1, q2, q3)
+    # PASSO 1: calcule q1 chamando percentil com p=25
+    q1 = percentil(dados, 25)
 
-    raise NotImplementedError("TODO 5: implemente quartis() em minhastats.py")
+    # PASSO 2: calcule q2 chamando percentil com p=50
+    q2 = percentil(dados, 50)
+
+    # PASSO 3: calcule q3 chamando percentil com p=75
+    q3 = percentil(dados, 75)
+
+    # PASSO 4: devolva a tupla (q1, q2, q3)
+    return (q1, q2, q3)
+
 
 
 # -----------------------------------------------------------------------------
@@ -324,7 +331,13 @@ def coeficiente_variacao(dados, em_percentual=True):
 
     # PASSO 4: se em_percentual for True, devolva cv * 100; senão devolva cv
 
-    raise NotImplementedError("TODO 6: implemente coeficiente_variacao() em minhastats.py")
+    m = media(dados)
+    if m == 0:
+        raise ValueError("coeficiente de variação indefinido para média zero")
+    
+    cv = desvio_padrao(dados, amostral=True) / m
+    return cv * 100 if em_percentual else cv
+
 
 
 # -----------------------------------------------------------------------------
@@ -340,18 +353,24 @@ def covariancia(x, y, amostral=True):
     Dica: zip(x, y) percorre as duas listas ao mesmo tempo:
           for xi, yi in zip(x, y): ...
     """
-    # PASSO 1: se len(x) != len(y), levante ValueError("x e y devem ter o mesmo tamanho")
+    if len(x) != len(y):
+        raise ValueError("x e y devem ter o mesmo tamanho")
 
-    # PASSO 2: n = len(x); se n == 0 levante ValueError; se n < 2 e amostral, levante ValueError
+    n = len(x)
+    if n == 0:
+        raise ValueError("sequência vazia")
+    if n < 2 and amostral:
+        raise ValueError("variância amostral exige n >= 2")
 
-    # PASSO 3: mx = media(x)   e   my = media(y)
+    mx = media(x)
+    my = media(y)
 
-    # PASSO 4: soma = sum((xi - mx) * (yi - my) for xi, yi in zip(x, y))
+    soma = sum((x[i] - mx) * (y[i] - my) for i in range(n))
 
-    # PASSO 5: devolva soma / (n - 1) se amostral, senão soma / n
+    return soma / (n - 1) if amostral else soma / n
 
-    raise NotImplementedError("TODO 7: implemente covariancia() em minhastats.py")
 
+    
 
 # -----------------------------------------------------------------------------
 # TODO 8 — CORRELAÇÃO DE PEARSON
@@ -361,14 +380,13 @@ def correlacao(x, y):
 
     Armadilha do guia: variável constante tem desvio zero -> divisão por zero.
     """
-    # PASSO 1: sx = desvio_padrao(x)   e   sy = desvio_padrao(y)
-    #          (a covariancia já valida os tamanhos, mas calcule-a depois dos desvios)
+    sx = desvio_padrao(x)
+    sy = desvio_padrao(y)
 
-    # PASSO 2: se sx == 0 ou sy == 0, levante ValueError("correlação indefinida: variável constante")
+    if sx == 0 or sy == 0:
+        raise ValueError("correlação indefinida: variável constante")
 
-    # PASSO 3: devolva covariancia(x, y) / (sx * sy)
-
-    raise NotImplementedError("TODO 8: implemente correlacao() em minhastats.py")
+    return covariancia(x, y) / (sx * sy)
 
 
 # -----------------------------------------------------------------------------
