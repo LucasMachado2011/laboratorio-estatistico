@@ -401,7 +401,11 @@ def numero_classes_sturges(n):
 
     # PASSO 2: devolva math.ceil(1 + 3.322 * math.log10(n))
 
-    raise NotImplementedError("TODO 9: implemente numero_classes_sturges() em minhastats.py")
+    if n <= 0:
+        raise ValueError("n deve ser positivo")
+
+    return math.ceil(1 + 3.322 * math.log10(n))
+
 
 
 # -----------------------------------------------------------------------------
